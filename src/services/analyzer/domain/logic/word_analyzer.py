@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 
 class WordAnalyzer:
-
     WORD_PATTERN = r"[а-яёa-z]+"
 
     def __init__(self, lemmatizer: ILemmatizer, collector: ICollector) -> None:

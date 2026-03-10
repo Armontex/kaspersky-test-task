@@ -3,7 +3,6 @@ from src.services.analyzer.infra.readers import StreamFileReader
 
 
 class TestStreamFileReader:
-
     def test_read_lines_success(self, tmp_path):
         file_content = "line1\nline2\nline3"
         file_path = tmp_path / "test.txt"
@@ -20,7 +19,7 @@ class TestStreamFileReader:
 
         reader = StreamFileReader(str(file_path))
         with reader as r:
-            assert not r._file.closed # type: ignore
+            assert not r._file.closed  # type: ignore
 
         assert reader._file.closed  # type: ignore
 

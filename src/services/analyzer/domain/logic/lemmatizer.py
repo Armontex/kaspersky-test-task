@@ -5,7 +5,6 @@ from functools import lru_cache
 
 
 class Lemmatizer:
-
     def __init__(self, cache_size: int = 10000) -> None:
         self._analyzer = MorphAnalyzer()
         self.get_lemma = lru_cache(maxsize=cache_size)(self._get_lemma_internal)

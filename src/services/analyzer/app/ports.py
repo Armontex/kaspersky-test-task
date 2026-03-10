@@ -6,17 +6,14 @@ if TYPE_CHECKING:
 
 
 class IWordAnalyzer(Protocol):
-
     def process_line(self, line: str) -> None: ...
 
     def generate_data(self) -> Generator[Result, None, None]: ...
 
 
 class IStreamFileReader(ContextManager["IStreamFileReader"], Protocol):
-
     def read_lines(self) -> Generator[str, None, None]: ...
 
 
 class IExcelWriter(Protocol):
-
     def create_report(self, results: Iterable[Result], output_path: str) -> None: ...

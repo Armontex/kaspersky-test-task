@@ -5,7 +5,6 @@ from src.services.analyzer.domain.models import Result
 
 
 class TestExcelWriter:
-
     @pytest.fixture
     def writer(self):
         return ExcelWriter()

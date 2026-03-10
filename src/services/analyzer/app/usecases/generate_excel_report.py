@@ -6,7 +6,6 @@ if TYPE_CHECKING:
 
 
 class GenerateExcelReport:
-
     def __init__(
         self,
         analyzer: IWordAnalyzer,

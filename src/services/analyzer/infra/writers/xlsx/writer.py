@@ -8,7 +8,6 @@ if TYPE_CHECKING:
 
 
 class ExcelWriter:
-
     COLUMNS = ["Словоформа", "Общее количество", "Статистика по строкам"]
 
     def create_report(self, results: Iterable[Result], output_path: str) -> None:

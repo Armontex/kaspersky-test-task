@@ -3,7 +3,6 @@ from src.services.analyzer.domain.logic.lemmatizer import Lemmatizer
 
 
 class TestLemmatizer:
-
     @pytest.fixture
     def lemmatizer(self):
         return Lemmatizer(cache_size=2)

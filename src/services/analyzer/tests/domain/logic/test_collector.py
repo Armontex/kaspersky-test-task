@@ -4,13 +4,11 @@ from src.services.analyzer.domain import StringCollector
 
 
 class TestCollector:
-
     @pytest.fixture
     def collector(self):
         return StringCollector()
 
     class TestAdd:
-
         def test_new_lemma_at_start(self, collector):
             collector.add("кот", 1, 1)
             assert collector.get_data(1) == {"кот": "1"}
@@ -37,7 +35,6 @@ class TestCollector:
             assert collector.get_data(4) == {"дом": "1,0,0,1"}
 
     class TestFinalize:
-
         def test_finalize_padding(self, collector):
             collector.add("окно", 1, 1)
             data = collector.get_data(5)

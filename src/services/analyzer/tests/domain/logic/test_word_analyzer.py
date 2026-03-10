@@ -5,7 +5,6 @@ from src.services.analyzer.domain.models import Result
 
 
 class TestWordAnalyzer:
-
     @pytest.fixture
     def mock_lemmatizer(self):
         lemmatizer = MagicMock()
@@ -23,8 +22,9 @@ class TestWordAnalyzer:
         return WordAnalyzer(mock_lemmatizer, mock_collector)
 
     class TestProcessLine:
-
-        def test_process_line_tokenization(self, analyzer, mock_lemmatizer, mock_collector):
+        def test_process_line_tokenization(
+            self, analyzer, mock_lemmatizer, mock_collector
+        ):
             line = "Кот, пёс! And... кот?"
             analyzer.process_line(line)
 
@@ -46,9 +46,8 @@ class TestWordAnalyzer:
             assert analyzer._global_counts["лемма_тест"] == 3
 
             mock_collector.add.assert_any_call("лемма_тест", 2, 2)
-            
-    class TestGenerateData:
 
+    class TestGenerateData:
         def test_generate_data(self, analyzer, mock_collector):
             analyzer._current_line_idx = 2
             analyzer._global_counts = {"лемма_кот": 5, "лемма_dog": 2}
@@ -59,8 +58,10 @@ class TestWordAnalyzer:
 
             assert len(results) == 2
             assert (
-                Result(lemma="лемма_кот", global_count=5, count_from_lines="1,0") in results
+                Result(lemma="лемма_кот", global_count=5, count_from_lines="1,0")
+                in results
             )
             assert (
-                Result(lemma="лемма_dog", global_count=2, count_from_lines="0,2") in results
+                Result(lemma="лемма_dog", global_count=2, count_from_lines="0,2")
+                in results
             )
