@@ -1,11 +1,45 @@
 services:
   rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    restart: always
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
 
   redis:
+    image: redis:${REDIS_VERSION}
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
 
   api:
+    build: .
+    env_file:
+      - .env
+    command: uvicorn main:app --host 0.0.0.0
+    volumes:
+      - shared_data:/app/data
+    depends_on:
+      - rabbitmq
+      - redis
 
   worker:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - shared_data:/app/data
+    command: celery -A src.config.celery_app worker --loglevel=info
+    depends_on:
+      - rabbitmq
+      - redis
 
 volumes:
   shared_data:
+  redis-data:
+  rabbitmq-data:
