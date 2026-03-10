@@ -1,0 +1,11 @@
+services:
+  rabbitmq:
+
+  redis:
+
+  api:
+
+  worker:
+
+volumes:
+  shared_data:
