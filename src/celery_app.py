@@ -1,5 +1,5 @@
 from celery import Celery
-from .settings import settings
+from .config.settings import settings
 
 celery_app = Celery(
     "analyzer_tasks",

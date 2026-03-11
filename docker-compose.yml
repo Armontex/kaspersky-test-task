@@ -21,9 +21,11 @@ services:
     build: .
     env_file:
       - .env
-    command: uvicorn main:app --host 0.0.0.0
+    command: uv run uvicorn src.fastapi_app:app --host 0.0.0.0
     volumes:
       - shared_data:/app/data
+    ports:
+      - "8000:8000"
     depends_on:
       - rabbitmq
       - redis
@@ -34,7 +36,7 @@ services:
       - .env
     volumes:
       - shared_data:/app/data
-    command: celery -A src.config.celery_app worker --loglevel=info
+    command: uv run celery -A src.celery_app worker --loglevel=info
     depends_on:
       - rabbitmq
       - redis
