@@ -19,9 +19,9 @@ class Container(containers.DeclarativeContainer):
 
     generate_excel_report = providers.Factory(
         GenerateExcelReport,
-        word_analyzer=word_analyzer,
+        analyzer=word_analyzer,
         reader=stream_file_reader,
-        excel_writer=excel_writer,
+        writer=excel_writer,
     )
 
 container = Container()

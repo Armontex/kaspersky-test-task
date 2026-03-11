@@ -4,6 +4,7 @@ from pathlib import Path
 from fastapi import APIRouter, status, HTTPException, Depends
 from fastapi.responses import FileResponse
 from src.config.settings import settings
+from ..const import REPORTS_DIR
 
 router = APIRouter()
 
@@ -33,7 +34,7 @@ async def download_report(
     is_path_exists: IsPathExistsFunc = Depends(get_is_path_exists),
     build_file_response: BuildFileResponseFunc = Depends(get_build_file_response),
 ):
-    output_path = settings.storage_path / f"{task_id}.xlsx"
+    output_path = settings.storage_path / REPORTS_DIR / f"{task_id}.xlsx"
 
     if not is_path_exists(output_path):
         raise HTTPException(status_code=404, detail="Файл не найден или еще не готов")

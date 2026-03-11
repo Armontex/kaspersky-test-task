@@ -1,9 +1,11 @@
 from __future__ import annotations
 import uuid
+from celery import uuid
 from typing import Callable, Awaitable
 from pydantic import BaseModel, ConfigDict
 from fastapi import APIRouter, UploadFile, File, status, HTTPException, Depends
 from src.config.settings import settings
+from ..const import REPORTS_DIR, TASKS_DIR
 from ..utils import write_file
 from ...app.tasks import analyze_file_task
 
@@ -41,10 +43,13 @@ async def export_report(
     task: AnalyzeFileTask = Depends(get_analyze_file_task),
     write_file: WriteFileFunc = Depends(get_write_file),
 ):
-    task_id = str(uuid.uuid4())
+    task_id = uuid()
 
-    input_path = settings.storage_path / f"tmp/{task_id}.txt"
-    output_path = settings.storage_path / f"tmp/{task_id}.xlsx"
+    input_path = settings.storage_path / TASKS_DIR / f"{task_id}.txt"
+    output_path = settings.storage_path / REPORTS_DIR / f"{task_id}.xlsx"
+
+    input_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
         await write_file(str(input_path), file)
@@ -54,5 +59,5 @@ async def export_report(
             detail="Ошибка при сохранении файла",
         ) from e
 
-    task.delay(str(input_path), str(output_path))
+    task.apply_async(args=[str(input_path), str(output_path)], task_id=task_id)
     return TaskResponseModel(task_id=task_id)

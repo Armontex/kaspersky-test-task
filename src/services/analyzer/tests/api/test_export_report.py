@@ -6,6 +6,15 @@ from src.services.analyzer.api.routers.export_report import (
     get_analyze_file_task,
     get_write_file,
 )
+from src.config.settings import settings
+
+
+@pytest.fixture(autouse=True)
+def override_settings(tmp_path):
+    old_path = settings.storage_path
+    settings.storage_path = tmp_path
+    yield
+    settings.storage_path = old_path
 
 
 async def test_export_report_success(async_client: AsyncClient):
@@ -18,13 +27,17 @@ async def test_export_report_success(async_client: AsyncClient):
     file_data = {"file": ("test.txt", b"hello world", "text/plain")}
 
     response = await async_client.post("public/report/export", files=file_data)
-
     assert response.status_code == 202
 
-    mock_write.assert_called_once()
+    task_id = response.json()["task_id"]
 
-    mock_task.delay.assert_called_once()
+    mock_task.apply_async.assert_called_once()
 
-    args, _ = mock_task.delay.call_args
-    assert isinstance(args[0], str)
-    assert isinstance(args[1], str)
+    _, kwargs = mock_task.apply_async.call_args
+
+    assert kwargs["task_id"] == task_id
+
+    actual_task_args = kwargs.get("args", [])
+
+    assert any("tasks" in str(arg) for arg in actual_task_args)
+    assert any("reports" in str(arg) for arg in actual_task_args)
