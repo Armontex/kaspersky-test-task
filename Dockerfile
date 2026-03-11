@@ -7,9 +7,9 @@ WORKDIR /app
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app"
 
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml pytest.ini uv.lock ./
 
-RUN uv sync --frozen --no-install-project --no-dev
+RUN uv sync --frozen --no-install-project
 
 COPY src ./src
 

@@ -7,7 +7,6 @@ from ..services.analyzer.infra.writers import ExcelWriter
 
 
 class Container(containers.DeclarativeContainer):
-
     string_collector = providers.Factory(StringCollector)
     lemmatizer = providers.Factory(Lemmatizer)
     word_analyzer = providers.Factory(
@@ -23,5 +22,6 @@ class Container(containers.DeclarativeContainer):
         reader=stream_file_reader,
         writer=excel_writer,
     )
+
 
 container = Container()

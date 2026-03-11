@@ -4,7 +4,7 @@ from httpx import AsyncClient, ASGITransport
 from src.fastapi_app import app
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def async_client():
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test"

@@ -10,8 +10,8 @@ async def test_download_report_success_di(async_client):
 
     app.dependency_overrides[get_is_path_exists] = lambda: lambda path: True
     mock_response = MagicMock()
-    app.dependency_overrides[get_build_file_response] = (
-        lambda: lambda path: mock_response
+    app.dependency_overrides[get_build_file_response] = lambda: (
+        lambda path: mock_response
     )
 
     response = await async_client.get("public/report/download/some_uuid")

@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 from src.services.analyzer.api.routers.get_task_status import get_async_result
 from src.fastapi_app import app
 
+
 async def test_get_task_status_success(async_client):
     mock_result = MagicMock()
     mock_result.status = "SUCCESS"
